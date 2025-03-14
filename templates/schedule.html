@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../static/main.css" />
+    <title>Расписание автобусов</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            color: #444;
+            margin-top: 30px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        li {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .alert {
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            border-radius: 5px;
+            max-width: 500px;
+        }
+
+        .alert-info {
+            background-color: #d9edf7;
+            color: #31708f;
+        }
+
+        .alert-warning {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <img src="../static/2260348s-960.jpg" alt="buser" style="width: 100px; height: 100px;">
+        Расписание автобусов
+    </h1>
+
+    <form method="POST">
+        <label for="stop">Выберите остановку:</label>
+        <select name="stop" id="stop">
+            {% for stop in stops %}
+                <option value="{{ stop }}" {% if stop == selected_stop %}selected{% endif %}>{{ stop }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Показать расписание</button>
+    </form>
+
+    {% if selected_stop %}
+        <h2>Расписание для остановки: {{ selected_stop }}</h2>
+
+        {% if first_ride_time %}
+            <p>Первый рейс: {{ first_ride_time }}</p>
+            <p>Время до первого рейса: {{ time_left }}</p>
+        {% else %}
+            <p>На данный момент рейсов нет.</p>
+        {% endif %}
+
+        <ul>
+            {% for time in schedule %}
+                <li>{{ time }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if first_ride_time %}
+            <div class="alert alert-info">
+                <strong>Следующий рейс:</strong> {{ first_ride_time }} (Ожидаем: {{ time_left }})
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                Нет доступных рейсов на ближайшее время.
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        setInterval(function() {
+            location.reload();
+        }, 60000);
+    </script>
+</body>
+</html>
