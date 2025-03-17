@@ -9,7 +9,7 @@
 ---
 ###  1. Клонирование репозитория с GitHub  
 ```bash
-git clone https://github.com/USERNAME/bus-schedule.git
+git@github.com:AGAGAGOOD23/code_rewiew.git
 ```
 ---
  2. Запуск сборки сервиса
